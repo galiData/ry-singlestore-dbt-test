@@ -159,7 +159,7 @@ jobs:
           css_tag = '<link rel="stylesheet" href="custom.css">'
           js_tag = """<script>
           (function() {
-            var LOGO = "images/ry-logo-small.png";
+            var LOGO = "images/ry-logo.png";
             function replaceLogo() {
               document.querySelectorAll("img").forEach(function(img) {
                 if (img.alt === "dbt" || img.src.indexOf("dbt-logo") > -1 || img.src.indexOf("dbt_logo") > -1) {

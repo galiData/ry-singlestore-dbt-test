@@ -9,7 +9,7 @@ img[alt="dbt"],
 img[alt="dbt docs"],
 img[src*="dbt-logo"],
 img[src*="dbt_logo"] {
-  content: url('images/ry-logo-small.png') !important;
+  content: url('images/ry-logo.png') !important;
   max-height: 36px;
   width: auto;
 }
@@ -93,15 +93,15 @@ header,
 [class*="navbar"],
 [class*="topbar"],
 [class*="header"] {
-  background-color: var(--ry-black) !important;
-  color: var(--ry-white) !important;
+  background-color: var(--ry-bg-light) !important;
+  color: var(--ry-gray-dark) !important;
   border-bottom: 3px solid var(--ry-red);
 }
 
 [class*="navbar"] a,
 [class*="topbar"] a,
 header a {
-  color: var(--ry-white) !important;
+  color: var(--ry-gray-dark) !important;
 }
 
 /* ── Main Content Area ───────────────────────────────────────────────────── */
