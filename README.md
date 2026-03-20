@@ -2,6 +2,21 @@
 
 This repository contains the data transformation layer for Rocket Youth's analytics platform. It uses **dbt (data build tool)** to transform raw operational data stored in **SingleStore** into clean, analytics-ready models.
 
+## Owners
+
+**Rocket Youth Analytics Team**
+
+| Name | Email |
+|---|---|
+| Gal Vekselman | gal@rocketyouthbrands.com |
+| Matheus Esteves | mesteves@rocketyouthbrands.com |
+
+## dbt Docs
+
+Live data catalog — auto-updated on every deploy to `main`:
+
+**http://ry-dbt.s3-website-us-east-1.amazonaws.com**
+
 ---
 
 ## What is dbt?
