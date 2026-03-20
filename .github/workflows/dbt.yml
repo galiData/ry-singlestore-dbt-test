@@ -161,16 +161,26 @@ jobs:
           (function() {
             var LOGO = "images/ry-logo.png";
             function replaceLogo() {
-              document.querySelectorAll("img").forEach(function(img) {
-                if (img.alt === "dbt" || img.src.indexOf("dbt-logo") > -1 || img.src.indexOf("dbt_logo") > -1) {
-                  img.src = LOGO;
-                  img.alt = "Rocket Youth";
-                }
-              });
+              // Target the exact dbt docs logo: <img class="logo" ng-src="...">
+              var logo = document.querySelector("img.logo");
+              if (logo && logo.src.indexOf("ry-logo") === -1) {
+                logo.src = LOGO;
+                logo.alt = "Rocket Youth";
+                logo.style.height = "36px";
+                logo.style.width = "auto";
+                logo.style.maxWidth = "160px";
+              }
             }
+            // Watch for AngularJS to render the logo after bootstrap
             var obs = new MutationObserver(replaceLogo);
-            obs.observe(document.body, { childList: true, subtree: true });
+            obs.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["src", "ng-src"] });
             replaceLogo();
+            // Fallback polling — AngularJS digest may update src after observer fires
+            var attempts = 0;
+            var poll = setInterval(function() {
+              replaceLogo();
+              if (++attempts > 20) clearInterval(poll);
+            }, 300);
           })();
           </script>"""
 
