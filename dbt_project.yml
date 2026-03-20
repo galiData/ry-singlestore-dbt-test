@@ -2,13 +2,6 @@ name: ry_singlestore
 version: "1.0.0"
 config-version: 2
 
-# Project metadata shown in dbt docs
-description: >
-  Rocket Youth Analytics dbt project. Transforms raw operational data from
-  GoHighLevel, Jackrabbit, QuickBooks, NetSuite, UKG, iClassPro, and 15+
-  other source systems into analytics-ready models in SingleStore.
-  Maintained by the Rocket Youth Analytics team.
-
 profile: ry_singlestore
 
 model-paths: ["models"]
