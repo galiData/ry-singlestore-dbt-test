@@ -1,0 +1,22 @@
+ry_singlestore:
+  target: dev
+  outputs:
+    dev:
+      type: singlestore
+      host: "{{ env_var('DBT_SINGLESTORE_HOST') }}"
+      port: "{{ env_var('DBT_SINGLESTORE_PORT', '3306') | int }}"
+      user: "{{ env_var('DBT_SINGLESTORE_USER') }}"
+      password: "{{ env_var('DBT_SINGLESTORE_PASSWORD') }}"
+      database: "{{ env_var('DBT_SINGLESTORE_DATABASE') }}"
+      schema: "{{ env_var('DBT_SINGLESTORE_SCHEMA') }}"
+      threads: 4
+
+    prod:
+      type: singlestore
+      host: "{{ env_var('DBT_SINGLESTORE_HOST') }}"
+      port: "{{ env_var('DBT_SINGLESTORE_PORT', '3306') | int }}"
+      user: "{{ env_var('DBT_SINGLESTORE_USER') }}"
+      password: "{{ env_var('DBT_SINGLESTORE_PASSWORD') }}"
+      database: "{{ env_var('DBT_SINGLESTORE_DATABASE') }}"
+      schema: "{{ env_var('DBT_SINGLESTORE_SCHEMA') }}"
+      threads: 8

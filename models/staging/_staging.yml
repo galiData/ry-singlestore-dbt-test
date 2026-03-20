@@ -1,0 +1,24 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: Staged and cleaned customer records
+    columns:
+      - name: email
+        description: Customer email address (primary key)
+        tests:
+          - unique
+          - not_null
+      - name: first_name
+        tests:
+          - not_null
+      - name: last_name
+        tests:
+          - not_null
+      - name: phone
+      - name: date_of_birth
+      - name: city
+      - name: country
+      - name: signup_date
+      - name: is_active
+        description: Boolean — true if account is active

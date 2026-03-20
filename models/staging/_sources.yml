@@ -1,0 +1,34 @@
+version: 2
+
+sources:
+  - name: raw
+    description: Raw source tables from SingleStore
+    database: "{{ env_var('DBT_SINGLESTORE_DATABASE') }}"
+    schema: "{{ env_var('DBT_SINGLESTORE_SCHEMA') }}"
+    tables:
+      - name: raw_customers
+        description: Raw customer records
+        columns:
+          - name: email
+            description: Customer email address (primary key)
+            tests:
+              - unique
+              - not_null
+          - name: first_name
+            tests:
+              - not_null
+          - name: last_name
+            tests:
+              - not_null
+          - name: phone
+            description: Customer phone number (nullable)
+          - name: date_of_birth
+            description: Customer date of birth (nullable)
+          - name: city
+            description: Customer city (nullable)
+          - name: country
+            description: Customer country, defaults to US
+          - name: signup_date
+            description: Timestamp when the customer signed up
+          - name: is_active
+            description: Whether the customer account is active (1=true, 0=false)

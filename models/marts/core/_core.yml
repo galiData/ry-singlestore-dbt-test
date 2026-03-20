@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: dim_customers
+    description: Customer dimension table — clean, analysis-ready customer records
+    columns:
+      - name: email
+        description: Primary key
+        tests:
+          - unique
+          - not_null
+      - name: first_name
+        tests:
+          - not_null
+      - name: last_name
+        tests:
+          - not_null
+      - name: full_name
+        description: Concatenated first and last name
+      - name: phone
+      - name: date_of_birth
+      - name: age
+        description: Current age in years derived from date_of_birth
+      - name: city
+      - name: country
+      - name: signup_date
+      - name: is_active
