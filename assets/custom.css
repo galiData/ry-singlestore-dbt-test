@@ -11,11 +11,12 @@
   forced-color-adjust: none;
 }
 
-/* Logo replacement */
+/* Logo replacement — sized to fill the header bar */
 img.logo {
-  content: url('__S3_BASE_URL__/images/image.png') !important;
-  height: 36px !important;
+  content: url('__S3_BASE_URL__/images/ry-logo-small.png') !important;
+  height: 64px !important;
   width: auto !important;
-  max-width: 160px !important;
+  max-width: 240px !important;
   object-fit: contain !important;
+  display: block !important;
 }
