@@ -9,10 +9,12 @@ on:
       - "seeds/**"
       - "snapshots/**"
       - "tests/**"
+      - "assets/**"
       - "dbt_project.yml"
       - "packages.yml"
       - "profiles.yml"
       - "requirements.txt"
+      - ".github/workflows/dbt.yml"
   pull_request:
     branches: [main]
     paths:
@@ -21,10 +23,12 @@ on:
       - "seeds/**"
       - "snapshots/**"
       - "tests/**"
+      - "assets/**"
       - "dbt_project.yml"
       - "packages.yml"
       - "profiles.yml"
       - "requirements.txt"
+      - ".github/workflows/dbt.yml"
 
 env:
   DBT_SINGLESTORE_HOST: ${{ secrets.DBT_SINGLESTORE_HOST }}
