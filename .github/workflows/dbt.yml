@@ -146,9 +146,27 @@ jobs:
       - name: dbt docs generate
         run: dbt docs generate --profiles-dir .
 
-      - name: Inject brand CSS into docs
+      - name: Inject brand CSS and logo replacement into docs
         run: |
+          # Inject CSS
           sed -i 's|</head>|<link rel="stylesheet" href="custom.css"></head>|' target/index.html
+
+          # Inject JS logo replacement — runs after React renders (SPA)
+          sed -i 's|</body>|<script>\
+          (function(){\
+            var LOGO="images/ry-logo-small.png";\
+            function replace(){\
+              document.querySelectorAll("img").forEach(function(img){\
+                if(img.alt==="dbt"||img.src.indexOf("dbt-logo")>-1||img.src.indexOf("dbt_logo")>-1){\
+                  img.src=LOGO; img.alt="Rocket Youth";\
+                }\
+              });\
+            }\
+            var obs=new MutationObserver(replace);\
+            obs.observe(document.body,{childList:true,subtree:true});\
+            replace();\
+          })();\
+          </script></body>|' target/index.html
 
       - name: Sync docs, manifest, and assets to S3
         run: |

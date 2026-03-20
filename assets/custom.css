@@ -3,6 +3,17 @@
    Brand system: Black + White + Red + Gray
    ========================================================================== */
 
+/* ── Logo Replacement ────────────────────────────────────────────────────── */
+/* Targets the dbt logo img tag (alt="dbt" in dbt docs) */
+img[alt="dbt"],
+img[alt="dbt docs"],
+img[src*="dbt-logo"],
+img[src*="dbt_logo"] {
+  content: url('images/ry-logo-small.png') !important;
+  max-height: 36px;
+  width: auto;
+}
+
 /* ── CSS Variables ──────────────────────────────────────────────────────── */
 :root {
   /* Primary palette */
