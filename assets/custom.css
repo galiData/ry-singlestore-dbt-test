@@ -13,7 +13,7 @@
 
 /* Logo replacement */
 img.logo {
-  content: url('__S3_BASE_URL__/images/ry-logo.png') !important;
+  content: url('__S3_BASE_URL__/images/ry-logo-small.png') !important;
   height: 36px !important;
   width: auto !important;
   max-width: 160px !important;
