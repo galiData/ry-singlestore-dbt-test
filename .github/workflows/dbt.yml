@@ -152,25 +152,36 @@ jobs:
 
       - name: Inject brand CSS and logo replacement into docs
         run: |
-          # Inject CSS
-          sed -i 's|</head>|<link rel="stylesheet" href="custom.css"></head>|' target/index.html
+          python3 - <<'EOF'
+          with open("target/index.html", "r", encoding="utf-8") as f:
+              html = f.read()
 
-          # Inject JS logo replacement — runs after React renders (SPA)
-          sed -i 's|</body>|<script>\
-          (function(){\
-            var LOGO="images/ry-logo-small.png";\
-            function replace(){\
-              document.querySelectorAll("img").forEach(function(img){\
-                if(img.alt==="dbt"||img.src.indexOf("dbt-logo")>-1||img.src.indexOf("dbt_logo")>-1){\
-                  img.src=LOGO; img.alt="Rocket Youth";\
-                }\
-              });\
-            }\
-            var obs=new MutationObserver(replace);\
-            obs.observe(document.body,{childList:true,subtree:true});\
-            replace();\
-          })();\
-          </script></body>|' target/index.html
+          css_tag = '<link rel="stylesheet" href="custom.css">'
+          js_tag = """<script>
+          (function() {
+            var LOGO = "images/ry-logo-small.png";
+            function replaceLogo() {
+              document.querySelectorAll("img").forEach(function(img) {
+                if (img.alt === "dbt" || img.src.indexOf("dbt-logo") > -1 || img.src.indexOf("dbt_logo") > -1) {
+                  img.src = LOGO;
+                  img.alt = "Rocket Youth";
+                }
+              });
+            }
+            var obs = new MutationObserver(replaceLogo);
+            obs.observe(document.body, { childList: true, subtree: true });
+            replaceLogo();
+          })();
+          </script>"""
+
+          html = html.replace("</head>", css_tag + "</head>", 1)
+          html = html.replace("</body>", js_tag + "</body>", 1)
+
+          with open("target/index.html", "w", encoding="utf-8") as f:
+              f.write(html)
+
+          print("Injected CSS and logo replacement JS successfully.")
+          EOF
 
       - name: Sync docs, manifest, and assets to S3
         run: |
