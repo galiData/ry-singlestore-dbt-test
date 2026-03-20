@@ -3,8 +3,28 @@ name: dbt
 on:
   push:
     branches: [main]
+    paths:
+      - "models/**"
+      - "macros/**"
+      - "seeds/**"
+      - "snapshots/**"
+      - "tests/**"
+      - "dbt_project.yml"
+      - "packages.yml"
+      - "profiles.yml"
+      - "requirements.txt"
   pull_request:
     branches: [main]
+    paths:
+      - "models/**"
+      - "macros/**"
+      - "seeds/**"
+      - "snapshots/**"
+      - "tests/**"
+      - "dbt_project.yml"
+      - "packages.yml"
+      - "profiles.yml"
+      - "requirements.txt"
 
 env:
   DBT_SINGLESTORE_HOST: ${{ secrets.DBT_SINGLESTORE_HOST }}
@@ -13,9 +33,11 @@ env:
   DBT_SINGLESTORE_PASSWORD: ${{ secrets.DBT_SINGLESTORE_PASSWORD }}
   DBT_SINGLESTORE_DATABASE: ${{ secrets.DBT_SINGLESTORE_DATABASE }}
   DBT_SINGLESTORE_SCHEMA: ${{ secrets.DBT_SINGLESTORE_SCHEMA }}
+  DBT_DOCS_S3_BUCKET: ${{ secrets.DBT_DOCS_S3_BUCKET }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
 
 jobs:
-  # ── PR: compile + test only, no writes to the database ──────────────────────
+  # ── PR: compile + test only modified models, no writes ──────────────────────
   ci:
     name: CI (PR check)
     if: github.event_name == 'pull_request'
@@ -37,15 +59,34 @@ jobs:
       - name: dbt deps
         run: dbt deps --profiles-dir .
 
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Download previous manifest for state comparison
+        run: |
+          mkdir -p state
+          aws s3 cp s3://${{ secrets.DBT_DOCS_S3_BUCKET }}/manifest.json state/manifest.json || echo "No previous manifest found — will run all models"
+
       - name: dbt compile
         run: dbt compile --profiles-dir .
 
-      - name: dbt test (continue on model failures)
-        run: dbt test --profiles-dir . --no-fail-fast
-        # Exit code will be non-zero if any test fails — PR will be blocked.
-        # Individual passing tests still run thanks to --no-fail-fast.
+      - name: dbt test (modified models only, continue on failures)
+        run: |
+          if [ -f state/manifest.json ]; then
+            echo "Running tests on modified models only"
+            dbt test --profiles-dir . --no-fail-fast \
+              --select state:modified+ \
+              --state ./state
+          else
+            echo "No previous state — running all tests"
+            dbt test --profiles-dir . --no-fail-fast
+          fi
 
-  # ── Main: full run → test → docs → publish ──────────────────────────────────
+  # ── Main: run modified → test → docs → publish ──────────────────────────────
   cd:
     name: CD (deploy to SingleStore)
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -67,26 +108,45 @@ jobs:
       - name: dbt deps
         run: dbt deps --profiles-dir .
 
-      - name: dbt run (continue past broken models)
-        run: dbt run --profiles-dir . --no-fail-fast
-
-      - name: dbt test (continue past broken tests)
-        run: dbt test --profiles-dir . --no-fail-fast
-        # Failing tests do NOT block the docs publish step below.
-        # The overall job will still report as failed so you get notified.
-        continue-on-error: true
-
-      - name: dbt docs generate
-        run: dbt docs generate --profiles-dir .
-
-      - name: Upload docs to S3
+      - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Sync docs to S3 bucket
+      - name: Download previous manifest for state comparison
+        run: |
+          mkdir -p state
+          aws s3 cp s3://${{ secrets.DBT_DOCS_S3_BUCKET }}/manifest.json state/manifest.json || echo "No previous manifest found — will run all models"
+
+      - name: dbt run (modified models + downstream, continue past broken)
+        run: |
+          if [ -f state/manifest.json ]; then
+            echo "Running modified models and their downstream dependencies"
+            dbt run --profiles-dir . --no-fail-fast \
+              --select state:modified+ \
+              --state ./state
+          else
+            echo "No previous state — running all models"
+            dbt run --profiles-dir . --no-fail-fast
+          fi
+
+      - name: dbt test (modified models only, continue past broken)
+        run: |
+          if [ -f state/manifest.json ]; then
+            dbt test --profiles-dir . --no-fail-fast \
+              --select state:modified+ \
+              --state ./state
+          else
+            dbt test --profiles-dir . --no-fail-fast
+          fi
+        continue-on-error: true
+
+      - name: dbt docs generate
+        run: dbt docs generate --profiles-dir .
+
+      - name: Sync docs and manifest to S3
         run: |
           aws s3 sync target/ s3://${{ secrets.DBT_DOCS_S3_BUCKET }}/ \
             --include "index.html" \
@@ -96,5 +156,4 @@ jobs:
             --cache-control "max-age=300"
 
       - name: Print docs URL
-        run: |
-          echo "📊 dbt docs: http://${{ secrets.DBT_DOCS_S3_BUCKET }}.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com"
+        run: echo "dbt docs live at http://${{ secrets.DBT_DOCS_S3_BUCKET }}.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com"
