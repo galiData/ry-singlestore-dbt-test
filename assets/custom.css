@@ -43,7 +43,7 @@ html, body {
 
 /* ── Logo ────────────────────────────────────────────────────────────────── */
 img.logo {
-  content: url('images/ry-logo.png') !important;
+  content: url('http://ry-dbt.s3-website-us-east-1.amazonaws.com/images/ry-logo.png') !important;
   height: 36px !important;
   width: auto !important;
   max-width: 160px !important;
@@ -51,10 +51,14 @@ img.logo {
 }
 
 /* ── Top Navigation ──────────────────────────────────────────────────────── */
+/* Exact dbt docs classes: app-header app-navbar app-shadow app-pad */
+.app-navbar,
+.app-header,
 .navbar,
 .navbar-default,
 nav.navbar,
-[class*="navbar"] {
+[class*="navbar"],
+[class*="app-header"] {
   background-color: var(--ry-white) !important;
   border-bottom: 1px solid var(--ry-border) !important;
   box-shadow: var(--ry-shadow) !important;

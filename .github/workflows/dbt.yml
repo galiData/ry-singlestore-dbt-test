@@ -159,7 +159,7 @@ jobs:
           css_tag = '<link rel="stylesheet" href="custom.css">'
           js_tag = """<script>
           (function() {
-            var LOGO = "images/ry-logo.png";
+            var LOGO = window.location.origin + "/images/ry-logo.png";
             function replaceLogo() {
               // Target the exact dbt docs logo: <img class="logo" ng-src="...">
               var logo = document.querySelector("img.logo");
@@ -195,17 +195,17 @@ jobs:
 
       - name: Sync docs, manifest, and assets to S3
         run: |
-          # Upload dbt docs
-          aws s3 sync target/ s3://${{ secrets.DBT_DOCS_S3_BUCKET }}/ \
-            --include "index.html" \
-            --include "manifest.json" \
-            --include "catalog.json" \
-            --delete \
-            --cache-control "max-age=300"
-
-          # Upload brand assets (CSS + images)
+          # Upload brand assets first (CSS + images) so they exist before index.html is live
           aws s3 sync assets/ s3://${{ secrets.DBT_DOCS_S3_BUCKET }}/ \
             --cache-control "max-age=86400"
+
+          # Upload dbt docs — explicit files only, no --delete so assets are never wiped
+          aws s3 cp target/index.html s3://${{ secrets.DBT_DOCS_S3_BUCKET }}/index.html \
+            --cache-control "no-cache"
+          aws s3 cp target/manifest.json s3://${{ secrets.DBT_DOCS_S3_BUCKET }}/manifest.json \
+            --cache-control "max-age=300"
+          aws s3 cp target/catalog.json s3://${{ secrets.DBT_DOCS_S3_BUCKET }}/catalog.json \
+            --cache-control "max-age=300"
 
       - name: Print docs URL
         run: echo "dbt docs live at http://${{ secrets.DBT_DOCS_S3_BUCKET }}.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com"
