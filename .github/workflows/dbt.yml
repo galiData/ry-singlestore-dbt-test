@@ -151,55 +151,76 @@ jobs:
         run: dbt docs generate --profiles-dir .
 
       - name: Inject brand CSS and logo replacement into docs
+        env:
+          S3_BASE_URL: "http://${{ secrets.DBT_DOCS_S3_BUCKET }}.s3-website-${{ secrets.AWS_REGION }}.amazonaws.com"
         run: |
           python3 - <<'EOF'
+          import os
+
+          s3_base_url = os.environ["S3_BASE_URL"]
+
           with open("target/index.html", "r", encoding="utf-8") as f:
               html = f.read()
 
+          # Force light mode meta tag — prevents browser Auto Dark Mode
+          meta_tag = '<meta name="color-scheme" content="light">'
+
           css_tag = '<link rel="stylesheet" href="custom.css">'
+
           js_tag = """<script>
           (function() {
-            var LOGO = window.location.origin + "/images/ry-logo.png";
-            function replaceLogo() {
-              // Target the exact dbt docs logo: <img class="logo" ng-src="...">
+            var LOGO = "{s3_base_url}/images/ry-logo.png";
+            function replaceLogo() {{
               var logo = document.querySelector("img.logo");
-              if (logo && logo.src.indexOf("ry-logo") === -1) {
+              if (logo && logo.src.indexOf("ry-logo") === -1) {{
                 logo.src = LOGO;
                 logo.alt = "Rocket Youth";
                 logo.style.height = "36px";
                 logo.style.width = "auto";
                 logo.style.maxWidth = "160px";
-              }
-            }
-            // Watch for AngularJS to render the logo after bootstrap
+              }}
+            }}
             var obs = new MutationObserver(replaceLogo);
-            obs.observe(document.body, { childList: true, subtree: true, attributes: true, attributeFilter: ["src", "ng-src"] });
+            obs.observe(document.body, {{ childList: true, subtree: true, attributes: true, attributeFilter: ["src"] }});
             replaceLogo();
-            // Fallback polling — AngularJS digest may update src after observer fires
             var attempts = 0;
-            var poll = setInterval(function() {
+            var poll = setInterval(function() {{
               replaceLogo();
               if (++attempts > 20) clearInterval(poll);
-            }, 300);
-          })();
-          </script>"""
+            }}, 300);
+          }})();
+          </script>""".replace("{s3_base_url}", s3_base_url)
 
+          # Substitute S3 URL placeholder in CSS (copied from assets/ into target/)
+          import shutil
+          shutil.copy("assets/custom.css", "target/custom.css")
+          with open("target/custom.css", "r") as f:
+              css = f.read()
+          css = css.replace("__S3_BASE_URL__", s3_base_url)
+          with open("target/custom.css", "w") as f:
+              f.write(css)
+
+          html = html.replace("<head>", "<head>" + meta_tag, 1)
           html = html.replace("</head>", css_tag + "</head>", 1)
           html = html.replace("</body>", js_tag + "</body>", 1)
 
           with open("target/index.html", "w", encoding="utf-8") as f:
               f.write(html)
 
-          print("Injected CSS and logo replacement JS successfully.")
+          print(f"Injected: meta color-scheme, CSS link, logo JS. S3 URL: {s3_base_url}")
           EOF
 
       - name: Sync docs, manifest, and assets to S3
         run: |
-          # Upload brand assets first (CSS + images) so they exist before index.html is live
-          aws s3 sync assets/ s3://${{ secrets.DBT_DOCS_S3_BUCKET }}/ \
+          # 1. Upload images (never changes often)
+          aws s3 sync assets/images/ s3://${{ secrets.DBT_DOCS_S3_BUCKET }}/images/ \
             --cache-control "max-age=86400"
 
-          # Upload dbt docs — explicit files only, no --delete so assets are never wiped
+          # 2. Upload processed CSS (URL-substituted version from target/)
+          aws s3 cp target/custom.css s3://${{ secrets.DBT_DOCS_S3_BUCKET }}/custom.css \
+            --cache-control "no-cache"
+
+          # 3. Upload dbt doc files
           aws s3 cp target/index.html s3://${{ secrets.DBT_DOCS_S3_BUCKET }}/index.html \
             --cache-control "no-cache"
           aws s3 cp target/manifest.json s3://${{ secrets.DBT_DOCS_S3_BUCKET }}/manifest.json \

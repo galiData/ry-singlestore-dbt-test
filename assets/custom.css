@@ -27,9 +27,15 @@
   --ry-shadow-md:    0 4px 6px rgba(0,0,0,0.05), 0 2px 4px rgba(0,0,0,0.04);
 }
 
+/* ── Force Light Mode — prevents browser Auto Dark Mode from inverting colors */
+:root {
+  color-scheme: light only;
+}
+
 /* ── Reset & Base ────────────────────────────────────────────────────────── */
 *, *::before, *::after {
   box-sizing: border-box;
+  forced-color-adjust: none;
 }
 
 html, body {
@@ -43,7 +49,7 @@ html, body {
 
 /* ── Logo ────────────────────────────────────────────────────────────────── */
 img.logo {
-  content: url('http://ry-dbt.s3-website-us-east-1.amazonaws.com/images/ry-logo.png') !important;
+  content: url('__S3_BASE_URL__/images/ry-logo.png') !important;
   height: 36px !important;
   width: auto !important;
   max-width: 160px !important;
