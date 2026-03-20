@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: gohighlevel
+    description: GoHighLevel CRM and marketing automation platform
+    database: gohighlevel_staging
+    schema: gohighlevel_staging
+    tables:
+      - name: conversations
+        description: CRM conversation records between contacts and users
+      - name: opportunities_history
+        description: Historical opportunity/deal records in the sales pipeline
+      - name: pipelines
+        description: Sales pipeline definitions and stage configurations
+      - name: users
+        description: GoHighLevel user accounts and permissions

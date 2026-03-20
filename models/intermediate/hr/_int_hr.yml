@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: int_hr__employees
+    description: >
+      Unified employee entity combining UKG and BambooHR records.
+      Surrogate key generated from email for cross-system deduplication and joining.
+    columns:
+      - name: employee_sk
+        description: Surrogate key generated from lower(email)
+        tests:
+          - not_null
+          - unique
+      - name: email
+        description: Employee work email address (primary join key)
+      - name: first_name
+        description: Employee first name
+      - name: last_name
+        description: Employee last name
+      - name: employee_id
+        description: Source system native employee identifier
+      - name: department
+        description: Employee department assignment
+      - name: employment_status
+        description: Current employment status (active, terminated, on leave)
+      - name: hire_date
+        description: Date the employee was hired
+      - name: source_system
+        description: Origin system (ukg or bamboo)

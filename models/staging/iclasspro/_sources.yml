@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: iclasspro
+    description: iClassPro class scheduling and enrollment management system
+    database: ryb_iclasspro_staging
+    schema: ryb_iclasspro_staging
+    tables:
+      - name: classes
+        description: Class definitions including schedule, capacity, and pricing
+      - name: enrollments
+        description: Student enrollment records per class
+      - name: families
+        description: Family account records linking multiple students
+      - name: students
+        description: Student records with contact and demographic information
+      - name: staff
+        description: Instructor and staff records

@@ -1,0 +1,46 @@
+version: 2
+
+models:
+  - name: fct_payroll
+    description: >
+      Fact table of payroll earnings records per employee per pay period.
+      References int_hr__employees for the unified employee dimension.
+    columns:
+      - name: payroll_sk
+        description: Surrogate key for the payroll record
+        tests:
+          - not_null
+          - unique
+      - name: employee_sk
+        description: Foreign key to dim_employees / int_hr__employees
+      - name: pay_period_start_date
+        description: Start date of the pay period
+      - name: pay_period_end_date
+        description: End date of the pay period
+      - name: gross_pay
+        description: Total gross earnings for the pay period in USD
+      - name: source_system
+        description: Origin system (ukg or bamboo)
+
+  - name: dim_employees
+    description: >
+      Employee dimension table with deduplicated employee records from UKG and BambooHR.
+      Built from int_hr__employees.
+    columns:
+      - name: employee_sk
+        description: Surrogate key generated from lower(email)
+        tests:
+          - not_null
+          - unique
+      - name: email
+        description: Employee work email address
+      - name: first_name
+        description: Employee first name
+      - name: last_name
+        description: Employee last name
+      - name: department
+        description: Employee department
+      - name: employment_status
+        description: Current employment status
+      - name: hire_date
+        description: Date the employee was hired

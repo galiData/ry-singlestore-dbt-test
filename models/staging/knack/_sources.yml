@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: knack
+    description: Knack no-code database for internal client and service tracking
+    database: ryb_knack_staging
+    schema: ryb_knack_staging
+    tables:
+      - name: client
+        description: Client records managed in Knack
+      - name: package
+        description: Service package definitions and pricing
+      - name: service
+        description: Individual service records delivered to clients
+      - name: users
+        description: Knack application user accounts

@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: mindbody
+    description: Mindbody fitness and wellness business management platform
+    database: ryb_mindbody_staging
+    schema: ryb_mindbody_staging
+    tables:
+      - name: classes
+        description: Class and appointment definitions with schedule details
+      - name: enrollments
+        description: Client class enrollment and visit records
+      - name: sales
+        description: Point-of-sale and retail transaction records
+      - name: staff
+        description: Staff and instructor records

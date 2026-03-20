@@ -23,12 +23,30 @@ models:
   ry_singlestore:
     staging:
       +materialized: view
-      +schema: staging
+      +tags: ["bronze"]
 
     intermediate:
-      +materialized: ephemeral
+      +materialized: table
+      +tags: ["silver"]
+      accounting:
+        +tags: ["silver", "accounting"]
+      marketing:
+        +tags: ["silver", "marketing"]
+      growth:
+        +tags: ["silver", "growth"]
+      hr:
+        +tags: ["silver", "hr"]
 
     marts:
       +materialized: table
-      core:
-        +schema: core
+      +tags: ["gold"]
+      accounting:
+        +tags: ["gold", "accounting"]
+      marketing:
+        +tags: ["gold", "marketing"]
+      growth:
+        +tags: ["gold", "growth"]
+      hr:
+        +tags: ["gold", "hr"]
+      analytics:
+        +tags: ["gold", "analytics"]

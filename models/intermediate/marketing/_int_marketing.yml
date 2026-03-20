@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: int_marketing__leads
+    description: >
+      Unified lead entity combining GoHighLevel contacts and Pipedrive deal records.
+      Surrogate key generated from email for cross-system deduplication and joining.
+    columns:
+      - name: lead_sk
+        description: Surrogate key generated from lower(email)
+        tests:
+          - not_null
+          - unique
+      - name: email
+        description: Lead email address (primary join key)
+      - name: first_name
+        description: Lead first name
+      - name: last_name
+        description: Lead last name
+      - name: source_system
+        description: Origin system (gohighlevel or pipedrive)
+      - name: lead_status
+        description: Current status of the lead in the pipeline
+      - name: created_at
+        description: Timestamp when the lead was first created

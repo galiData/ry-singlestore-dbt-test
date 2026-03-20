@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: ukg
+    description: UKG (Ultimate Kronos Group) workforce management and HR platform
+    database: ryb_ukg_staging
+    schema: ryb_ukg_staging
+    tables:
+      - name: person_details
+        description: Employee personal information and demographics
+      - name: employment_details
+        description: Employment records including position, status, and hire dates
+      - name: wfm_employee_timecards
+        description: Workforce management timecard entries for hourly employees
+      - name: earnings_history
+        description: Historical payroll earnings records per employee per period

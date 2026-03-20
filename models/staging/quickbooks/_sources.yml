@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: quickbooks
+    description: QuickBooks accounting and financial management platform
+    database: ryb_quickbooks_staging
+    schema: ryb_quickbooks_staging
+    tables:
+      - name: invoices
+        description: Customer invoice records
+      - name: payments
+        description: Payment records applied to invoices
+      - name: customers
+        description: Customer account records
+      - name: accounts
+        description: Chart of accounts definitions
+      - name: bills
+        description: Vendor bill records for accounts payable

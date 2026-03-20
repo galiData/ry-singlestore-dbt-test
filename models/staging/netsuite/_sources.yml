@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: netsuite
+    description: NetSuite ERP for financial reporting and consolidation
+    database: ryb_netsuite_staging
+    schema: ryb_netsuite_staging
+    tables:
+      - name: transactions
+        description: All financial transaction records (invoices, bills, journals, etc.)
+      - name: account
+        description: Chart of accounts in NetSuite
+      - name: budgets
+        description: Budget records by period, subsidiary, and account
+      - name: subsidiary_map
+        description: Subsidiary hierarchy and intercompany mapping

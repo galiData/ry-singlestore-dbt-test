@@ -1,0 +1,23 @@
+version: 2
+
+models:
+  - name: int_accounting__transactions
+    description: >
+      Unified transaction entity combining QuickBooks and NetSuite financial records.
+      Includes a surrogate key for cross-system deduplication and joining.
+    columns:
+      - name: transaction_sk
+        description: Surrogate key generated from source_system + source_transaction_id
+        tests:
+          - not_null
+          - unique
+      - name: source_system
+        description: Origin system (quickbooks or netsuite)
+      - name: transaction_id
+        description: Source system native transaction identifier
+      - name: transaction_date
+        description: Date the transaction was recorded
+      - name: amount
+        description: Transaction amount in USD
+      - name: transaction_type
+        description: Type of transaction (invoice, payment, bill, journal, etc.)

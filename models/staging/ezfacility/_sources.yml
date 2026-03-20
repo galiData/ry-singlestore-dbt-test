@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: ezfacility
+    description: EZFacility sports facility and membership management platform
+    database: ryb_ezfacility_staging
+    schema: ryb_ezfacility_staging
+    tables:
+      - name: ez_clients
+        description: Client/member account records
+      - name: ez_invoices_by_client
+        description: Invoice records grouped by client
+      - name: ez_billed_items_by_revenue_date
+        description: Line-item billing records organized by revenue recognition date
+      - name: ez_membership_types
+        description: Membership plan type definitions and pricing

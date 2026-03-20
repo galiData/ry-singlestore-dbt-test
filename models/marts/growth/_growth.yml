@@ -1,0 +1,40 @@
+version: 2
+
+models:
+  - name: fct_enrollments
+    description: >
+      Fact table of all student enrollment events across all program management systems.
+      References int_growth__students for the unified student dimension.
+    columns:
+      - name: enrollment_sk
+        description: Surrogate key for the enrollment record
+        tests:
+          - not_null
+          - unique
+      - name: student_sk
+        description: Foreign key to dim_students / int_growth__students
+      - name: enrollment_date
+        description: Date the student enrolled in the program
+      - name: program_name
+        description: Name of the enrolled program or class
+      - name: source_system
+        description: Origin system (jackrabbit, iclasspro, leagueapps, etc.)
+
+  - name: dim_students
+    description: >
+      Student dimension table with deduplicated student records across all program systems.
+      Built from int_growth__students.
+    columns:
+      - name: student_sk
+        description: Surrogate key generated from lower(email)
+        tests:
+          - not_null
+          - unique
+      - name: email
+        description: Student email address
+      - name: first_name
+        description: Student first name
+      - name: last_name
+        description: Student last name
+      - name: source_system
+        description: Primary origin system for this student record

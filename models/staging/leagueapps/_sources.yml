@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: leagueapps
+    description: LeagueApps sports league and program registration platform
+    database: ryb_leagueapps_staging
+    schema: ryb_leagueapps_staging
+    tables:
+      - name: registrations_history
+        description: Historical registration records for programs and leagues
+      - name: invoices_history
+        description: Historical invoice records associated with registrations
+      - name: transactions_history
+        description: Historical payment transaction records
+      - name: members_history
+        description: Historical member profile and status records

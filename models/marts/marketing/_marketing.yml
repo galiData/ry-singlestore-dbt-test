@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: fct_leads
+    description: >
+      Fact table of all lead interactions across GoHighLevel and Pipedrive.
+      References int_marketing__leads for unified lead data.
+    columns:
+      - name: lead_event_sk
+        description: Surrogate key for the lead event record
+        tests:
+          - not_null
+          - unique
+      - name: lead_sk
+        description: Foreign key to int_marketing__leads
+      - name: event_date
+        description: Date of the lead interaction or status change
+      - name: lead_status
+        description: Lead status at time of event
+      - name: source_system
+        description: Origin system (gohighlevel or pipedrive)
+
+  - name: dim_campaigns
+    description: >
+      Campaign dimension table with unified campaign records from Google Ads and GoHighLevel.
+    columns:
+      - name: campaign_sk
+        description: Surrogate key for the campaign
+        tests:
+          - not_null
+          - unique
+      - name: campaign_name
+        description: Campaign display name
+      - name: campaign_id
+        description: Source system native campaign identifier
+      - name: source_system
+        description: Origin system (google_ads or gohighlevel)

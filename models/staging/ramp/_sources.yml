@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: ramp
+    description: Ramp corporate card and spend management platform
+    database: ryb_ramp_staging
+    schema: ryb_ramp_staging
+    tables:
+      - name: transactions
+        description: Corporate card transaction records with merchant, amount, and category

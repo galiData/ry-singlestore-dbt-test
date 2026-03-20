@@ -1,0 +1,18 @@
+version: 2
+
+sources:
+  - name: jackrabbit
+    description: Jackrabbit class management system for youth sports and activities
+    database: jackrabbit_staging
+    schema: jackrabbit_staging
+    tables:
+      - name: BIDStudents
+        description: Raw student records including contact and demographic info
+      - name: BIDCurrentEnrollDrops
+        description: Current and historical enrollment and drop records
+      - name: BIDPaymentTransactions
+        description: Payment transaction records for student billing
+      - name: BIDCurrentClasses
+        description: Active class definitions and schedule information
+      - name: BIDOrgs
+        description: Organization/location records for multi-site management

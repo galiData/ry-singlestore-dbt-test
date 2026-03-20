@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: ringcentral
+    description: RingCentral cloud communications and call tracking platform
+    database: ryb_ringcentral_staging
+    schema: ryb_ringcentral_staging
+    tables:
+      - name: call_log
+        description: Inbound and outbound call log records with duration and disposition
+      - name: recording_insights
+        description: AI-generated insights and transcription summaries from call recordings

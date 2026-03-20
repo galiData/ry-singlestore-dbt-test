@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: sportsengine
+    description: SportsEngine youth sports registration and management platform
+    database: ryb_sportsengine_staging
+    schema: ryb_sportsengine_staging
+    tables:
+      - name: registrations
+        description: Program and event registration records
+      - name: members
+        description: Member profile and account records
+      - name: transactions
+        description: Payment and refund transaction records for registrations

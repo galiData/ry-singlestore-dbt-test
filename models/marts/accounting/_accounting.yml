@@ -1,0 +1,37 @@
+version: 2
+
+models:
+  - name: fct_payments
+    description: >
+      Fact table of all payment transactions across QuickBooks and NetSuite.
+      References int_accounting__transactions for unified financial data.
+    columns:
+      - name: payment_sk
+        description: Surrogate key for the payment record
+        tests:
+          - not_null
+          - unique
+      - name: transaction_sk
+        description: Foreign key to int_accounting__transactions
+      - name: payment_date
+        description: Date the payment was received
+      - name: amount
+        description: Payment amount in USD
+      - name: source_system
+        description: Origin system (quickbooks or netsuite)
+
+  - name: dim_vendors
+    description: >
+      Vendor dimension table with deduplicated vendor records from QuickBooks and NetSuite.
+    columns:
+      - name: vendor_sk
+        description: Surrogate key for the vendor
+        tests:
+          - not_null
+          - unique
+      - name: vendor_name
+        description: Vendor display name
+      - name: vendor_id
+        description: Source system native vendor identifier
+      - name: source_system
+        description: Origin system (quickbooks or netsuite)

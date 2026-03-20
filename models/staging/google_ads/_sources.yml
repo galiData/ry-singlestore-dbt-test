@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: google_ads
+    description: >
+      Google Ads platform data with extensive campaign, ad group, ad, keyword,
+      and performance metric tables. Used for paid search and display advertising analytics.
+    database: ryb_google_ads_staging
+    schema: ryb_google_ads_staging
+    tables:
+      - name: account
+        description: Google Ads account-level settings and metadata
+      - name: campaign
+        description: Campaign definitions, budgets, and status
+      - name: ad_group
+        description: Ad group definitions nested within campaigns

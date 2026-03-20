@@ -1,0 +1,16 @@
+version: 2
+
+sources:
+  - name: pipedrive
+    description: Pipedrive CRM for sales pipeline and deal management
+    database: ryb_pipedrive_staging
+    schema: ryb_pipedrive_staging
+    tables:
+      - name: deals
+        description: Deal records with stage, value, and owner information
+      - name: persons
+        description: Contact person records associated with deals and organizations
+      - name: organizations
+        description: Organization/company records linked to deals
+      - name: activities
+        description: Logged sales activities (calls, emails, meetings) linked to deals

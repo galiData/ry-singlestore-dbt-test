@@ -1,0 +1,47 @@
+version: 2
+
+models:
+  - name: fct_revenue
+    description: >
+      Cross-department revenue fact table — Single Source of Truth for all revenue.
+      Combines payment data from accounting with enrollment revenue from growth systems.
+    columns:
+      - name: revenue_sk
+        description: Surrogate key for the revenue record
+        tests:
+          - not_null
+          - unique
+      - name: revenue_date
+        description: Date the revenue was recognized
+      - name: amount
+        description: Revenue amount in USD
+      - name: revenue_type
+        description: Classification of revenue (enrollment, payment, subscription, etc.)
+      - name: department
+        description: Department responsible for the revenue (growth, accounting, etc.)
+      - name: source_system
+        description: Origin system of the revenue record
+
+  - name: dim_customers
+    description: >
+      Cross-department customer dimension — Single Source of Truth for all customer entities.
+      Merges student, lead, and client records from all source systems using email as the
+      unified identity key.
+    columns:
+      - name: customer_sk
+        description: Surrogate key generated from lower(email)
+        tests:
+          - not_null
+          - unique
+      - name: email
+        description: Customer email address (unified identity key)
+      - name: first_name
+        description: Customer first name
+      - name: last_name
+        description: Customer last name
+      - name: is_student
+        description: Boolean — true if the customer has enrollment records
+      - name: is_lead
+        description: Boolean — true if the customer has CRM lead records
+      - name: primary_source_system
+        description: The first system where this customer was identified

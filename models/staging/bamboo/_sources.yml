@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: bamboo
+    description: BambooHR human resources information system
+    database: ryb_bamboo_staging
+    schema: ryb_bamboo_staging
+    tables:
+      - name: employees
+        description: Core employee records and employment status
+      - name: employee_details
+        description: Extended employee profile attributes and custom fields
+      - name: employee_compensation_history
+        description: Historical compensation changes per employee

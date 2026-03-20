@@ -1,0 +1,14 @@
+version: 2
+
+sources:
+  - name: teamsnap
+    description: TeamSnap team and league management platform
+    database: ryb_teamsnap_staging
+    schema: ryb_teamsnap_staging
+    tables:
+      - name: divisions
+        description: Division and league structure definitions
+      - name: teams
+        description: Team records including roster and season info
+      - name: transactions_history
+        description: Historical payment and fee transaction records

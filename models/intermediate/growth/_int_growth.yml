@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: int_growth__students
+    description: >
+      Unified student entity combining records from Jackrabbit and iClassPro.
+      Surrogate key generated from email for cross-system deduplication and joining.
+    columns:
+      - name: student_sk
+        description: Surrogate key generated from lower(email)
+        tests:
+          - not_null
+          - unique
+      - name: email
+        description: Student email address (primary join key)
+      - name: first_name
+        description: Student first name
+      - name: last_name
+        description: Student last name
+      - name: phone
+        description: Contact phone number
+      - name: date_of_birth
+        description: Student date of birth
+      - name: city
+        description: Student city of residence
+      - name: source_system
+        description: Origin system (jackrabbit, iclasspro, etc.)
+      - name: created_at
+        description: Timestamp when the record was first created
