@@ -23,7 +23,7 @@ div.logo a {
 
 /* Logo replacement — sized to fill the header bar */
 img.logo {
-  content: url('__S3_BASE_URL__/images/ry-logo-small.png') !important;
+  content: url('__S3_BASE_URL__/images/ry-dbt.png') !important;
   height: 60px !important;
   width: auto !important;
   max-width: 240px !important;
