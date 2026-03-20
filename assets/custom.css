@@ -11,12 +11,23 @@
   forced-color-adjust: none;
 }
 
+/* Logo wrapper — prevent clipping */
+div.logo,
+div.logo a {
+  display: flex !important;
+  align-items: center !important;
+  overflow: visible !important;
+  height: auto !important;
+  line-height: 0 !important;
+}
+
 /* Logo replacement — sized to fill the header bar */
 img.logo {
   content: url('__S3_BASE_URL__/images/ry-logo-small.png') !important;
-  height: 64px !important;
+  height: 60px !important;
   width: auto !important;
   max-width: 240px !important;
   object-fit: contain !important;
   display: block !important;
+  overflow: visible !important;
 }
