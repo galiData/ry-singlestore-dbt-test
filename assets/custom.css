@@ -1,0 +1,295 @@
+/* ==========================================================================
+   Rocket Youth — dbt Docs Custom Theme
+   Brand system: Black + White + Red + Gray
+   ========================================================================== */
+
+/* ── CSS Variables ──────────────────────────────────────────────────────── */
+:root {
+  /* Primary palette */
+  --ry-black:        #000000;
+  --ry-white:        #FFFFFF;
+  --ry-red:          #E52323;
+  --ry-red-hover:    #CC2424;
+
+  /* Neutral system */
+  --ry-bg-light:     #F5F5F5;
+  --ry-gray-mid:     #9CA3AF;
+  --ry-gray-dark:    #1F2937;
+
+  /* Semantic */
+  --ry-success:      #16A34A;
+  --ry-warning:      #F59E0B;
+  --ry-error:        #DC2626;
+  --ry-info:         #2563EB;
+}
+
+/* ── Base & Typography ───────────────────────────────────────────────────── */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  background-color: var(--ry-white);
+  color: var(--ry-gray-dark);
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--ry-black);
+  font-weight: 700;
+}
+
+p, li, td, th {
+  color: var(--ry-gray-dark); /* Dark gray for readability — not pure black */
+}
+
+a {
+  color: var(--ry-red);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--ry-red-hover);
+  text-decoration: underline;
+}
+
+/* ── Sidebar ─────────────────────────────────────────────────────────────── */
+.sidebar,
+[class*="sidebar"],
+nav[class*="nav"] {
+  background-color: var(--ry-black) !important;
+  color: var(--ry-white) !important;
+  border-right: 3px solid var(--ry-red);
+}
+
+.sidebar a,
+[class*="sidebar"] a {
+  color: var(--ry-white) !important;
+}
+
+.sidebar a:hover,
+[class*="sidebar"] a:hover {
+  color: var(--ry-red) !important;
+}
+
+/* Active / selected item in sidebar */
+.sidebar a.active,
+[class*="sidebar"] a.active,
+[class*="active-item"] {
+  color: var(--ry-red) !important;
+  border-left: 3px solid var(--ry-red);
+  font-weight: 600;
+}
+
+/* ── Navbar / Top Bar ────────────────────────────────────────────────────── */
+header,
+[class*="navbar"],
+[class*="topbar"],
+[class*="header"] {
+  background-color: var(--ry-black) !important;
+  color: var(--ry-white) !important;
+  border-bottom: 3px solid var(--ry-red);
+}
+
+[class*="navbar"] a,
+[class*="topbar"] a,
+header a {
+  color: var(--ry-white) !important;
+}
+
+/* ── Main Content Area ───────────────────────────────────────────────────── */
+main,
+[class*="main-content"],
+[class*="content-area"] {
+  background-color: var(--ry-white);
+}
+
+/* Alternating section backgrounds for visual rhythm */
+section:nth-child(even),
+[class*="section"]:nth-child(even) {
+  background-color: var(--ry-bg-light);
+}
+
+/* ── Buttons / CTAs ──────────────────────────────────────────────────────── */
+
+/* Primary CTA */
+button,
+[class*="btn-primary"],
+[class*="button-primary"],
+input[type="submit"] {
+  background-color: var(--ry-red) !important;
+  color: var(--ry-white) !important;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover,
+[class*="btn-primary"]:hover,
+input[type="submit"]:hover {
+  background-color: var(--ry-red-hover) !important;
+}
+
+/* Secondary CTA */
+[class*="btn-secondary"],
+[class*="button-secondary"] {
+  background-color: transparent !important;
+  color: var(--ry-black) !important;
+  border: 2px solid var(--ry-black) !important;
+}
+
+/* Ghost CTA */
+[class*="btn-ghost"],
+[class*="button-ghost"] {
+  background-color: transparent !important;
+  color: var(--ry-red) !important;
+  border: none !important;
+}
+
+/* ── Search Bar ──────────────────────────────────────────────────────────── */
+input[type="search"],
+input[type="text"],
+[class*="search-input"] {
+  border: 2px solid var(--ry-gray-mid);
+  border-radius: 4px;
+  background-color: var(--ry-white);
+  color: var(--ry-gray-dark);
+  transition: border-color 0.2s ease;
+}
+
+input[type="search"]:focus,
+input[type="text"]:focus,
+[class*="search-input"]:focus {
+  outline: none;
+  border-color: var(--ry-red);
+  box-shadow: 0 0 0 3px rgba(229, 35, 35, 0.15);
+}
+
+/* ── Tables ──────────────────────────────────────────────────────────────── */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th {
+  background-color: var(--ry-black);
+  color: var(--ry-white);
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 600;
+}
+
+td {
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--ry-bg-light);
+  color: var(--ry-gray-dark);
+}
+
+tr:hover td {
+  background-color: var(--ry-bg-light);
+}
+
+/* ── Code Blocks ─────────────────────────────────────────────────────────── */
+code,
+pre {
+  background-color: var(--ry-gray-dark);
+  color: #F8F8F2;
+  border-radius: 4px;
+  font-family: "JetBrains Mono", "Fira Code", "Courier New", monospace;
+}
+
+code {
+  padding: 2px 6px;
+  font-size: 0.875em;
+}
+
+pre {
+  padding: 16px;
+  overflow-x: auto;
+}
+
+/* ── Tags / Badges ───────────────────────────────────────────────────────── */
+[class*="tag"],
+[class*="badge"] {
+  border-radius: 999px;
+  font-size: 0.75em;
+  font-weight: 600;
+  padding: 2px 10px;
+}
+
+[class*="tag-model"],
+[class*="badge-model"] {
+  background-color: var(--ry-black);
+  color: var(--ry-white);
+}
+
+[class*="tag-source"],
+[class*="badge-source"] {
+  background-color: var(--ry-info);
+  color: var(--ry-white);
+}
+
+[class*="tag-test"],
+[class*="badge-test"] {
+  background-color: var(--ry-success);
+  color: var(--ry-white);
+}
+
+/* ── Test Status Indicators ──────────────────────────────────────────────── */
+[class*="status-pass"],
+[class*="test-pass"] {
+  color: var(--ry-success);
+}
+
+[class*="status-fail"],
+[class*="test-fail"] {
+  color: var(--ry-error);
+}
+
+[class*="status-warn"],
+[class*="test-warn"] {
+  color: var(--ry-warning);
+}
+
+/* ── Lineage Graph ───────────────────────────────────────────────────────── */
+[class*="graph"] svg circle,
+[class*="lineage"] svg circle {
+  fill: var(--ry-red);
+  stroke: var(--ry-black);
+}
+
+[class*="graph"] svg line,
+[class*="lineage"] svg line,
+[class*="graph"] svg path,
+[class*="lineage"] svg path {
+  stroke: var(--ry-gray-mid);
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--ry-bg-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--ry-red);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--ry-red-hover);
+}
+
+/* ── Accessibility — WCAG AA ─────────────────────────────────────────────── */
+/* Black on white:     21:1   ✅ AAA */
+/* Red on white:       4.7:1  ✅ AA  */
+/* Dark gray on white: 10.7:1 ✅ AAA */
+/* Mid gray on white:  2.9:1  ⚠️  use for decorative only, not body text */
+
+[class*="secondary-text"],
+[class*="subtitle"],
+[class*="label"] {
+  color: var(--ry-gray-dark); /* Override mid-gray for compliance */
+}
